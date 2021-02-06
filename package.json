@@ -1,0 +1,24 @@
+{
+  "name": "getinfo",
+  "version": "1.0.0",
+  "description": "get personal info such as ip, location, ram, os,device,battery",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node index.js"
+  },
+  "author": "KAUSTUBH",
+  "license": "ISC",
+  "dependencies": {
+    "battery-level": "^3.0.0",
+    "cheerio": "^1.0.0-rc.5",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "ipware": "^2.0.0",
+    "node-iplocate": "^1.0.2",
+    "os": "^0.1.1",
+    "prettier": "^2.2.1",
+    "request": "^2.88.2",
+    "systeminformation": "^5.0.10"
+  }
+}
