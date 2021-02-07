@@ -32,22 +32,25 @@ let year = date_ob.getFullYear();
 dt.push({year:year, month: month, date: date});
 
 var getIP = require('ipware')().get_ip;
-app.use(function(req, res, next) {
+app.use(async function(req, res, next) {
     var ipInfo = getIP(req);
+    p=ipInfo.clientIp;
     ip.push({ip: ipInfo.clientIp});
+    var p=ipInfo.clientIp;
+    await iplocate(p).then((results) => {
+      loc.push({results});
+    });
+    //console.log(ipInfo.clientIp);
     next();
 });
 
-
-iplocate(ip[0]).then((results) => {
-  loc.push({results});
-});
 
 device.push({host:os.hostname(),ram:os.totalmem()/1048576,type:os.type(),release: os.release(),platform: os.platform(), network:os.networkInterfaces()});
 
 
  
 batteryLevel().then(level => {
+  //console.log(level);
     battery.push({level});
 });
 
