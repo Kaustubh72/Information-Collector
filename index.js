@@ -8,6 +8,8 @@ const prettier = require("prettier");
 const batteryLevel = require('battery-level');
 const app = express();
 
+var navigator = global.navigator;
+
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -17,19 +19,24 @@ app.use(function (req, res, next) {
 
 
   var json=[];
-  var dt=[];
+  var dat=[];
   var ip=[];
   var loc=[];
   var device=[];
   var battery=[];
-let ts = Date.now();
 
-let date_ob = new Date(ts);
-let date = date_ob.getDate();
-let month = date_ob.getMonth() + 1;
-let year = date_ob.getFullYear();
+  let ts = Date.now();
 
-dt.push({year:year, month: month, date: date});
+  let date_ob = new Date(ts);
+  let date = date_ob.getDate();
+  let month = date_ob.getMonth() + 1;
+  let year = date_ob.getFullYear();
+  let hours = date_ob.getHours();
+  let minutes = date_ob.getMinutes();
+  let seconds = date_ob.getSeconds();
+
+  dat.push({year:year,month: month,date: date,hours:hours,minutes:minutes,seconds:seconds});
+
 
 var getIP = require('ipware')().get_ip;
 app.use(async function(req, res, next) {
@@ -48,13 +55,13 @@ app.use(async function(req, res, next) {
 device.push({host:os.hostname(),ram:os.totalmem()/1048576,type:os.type(),release: os.release(),platform: os.platform(), network:os.networkInterfaces()});
 
 
- 
 batteryLevel().then(level => {
   //console.log(level);
     battery.push({level});
 });
 
-json.push({date:dt, ip:ip,location:loc,device:device,battery:battery});
+
+json.push({date:dat, ip:ip,location:loc,device:device,battery:battery});
 
 
 app.get('/', async function(req, res) 
