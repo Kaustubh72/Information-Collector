@@ -63,11 +63,26 @@ batteryLevel().then(level => {
 
 json.push({date:dat, ip:ip,location:loc,device:device,battery:battery});
 
-
-app.get('/', async function(req, res) 
-{
-    res.send(prettier.format(JSON.stringify(json,null,4)));
+// Middleware to prettify JSON responses
+app.use((req, res, next) => {
+  res.jsonWithFormatting = (jsonObject) => {
+      const formattedJson = prettier.format(JSON.stringify(jsonObject, null, 4));
+      res.setHeader('Content-Type', 'application/json');
+      res.send(formattedJson);
+  };
+  next();
 });
+
+// Route
+app.get('/', async (req, res) => {
+  //const json = { key: 'value' }; // Replace with your actual JSON data
+  res.jsonWithFormatting(json);
+});
+
+// app.get('/', async function(req, res) 
+// {
+//     res.send(prettier.format(JSON.stringify(json,null,4)));
+// });
 
 app.listen(process.env.PORT || 5000);
 module.exports = app;
